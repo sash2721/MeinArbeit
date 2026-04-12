@@ -21,7 +21,7 @@ const displayFont = Lobster({
 
 export const metadata: Metadata = {
   title: {
-    default: "Sahil Shah — Software Engineer",
+    default: "Sahil Shah",
     template: "%s | Sahil Shah",
   },
   description:
@@ -47,14 +47,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "Sahil Shah — Software Engineer",
+    title: "Sahil Shah",
     description:
       "Building scalable backend systems, distributed architectures, and cloud-native platforms.",
     siteName: "Sahil Shah",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sahil Shah — Software Engineer",
+    title: "Sahil Shah",
     description:
       "Building scalable backend systems, distributed architectures, and cloud-native platforms.",
     creator: "@ss_21_",
