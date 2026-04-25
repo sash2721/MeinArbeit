@@ -102,7 +102,7 @@ export default function Navbar() {
           })}
           <div className="w-px h-5 mx-3" style={{ background: "var(--border-primary)" }} />
           <a
-            href="/resume.pdf"
+            href="https://drive.google.com/file/d/1t3aR6bJNGVYWR5geLvQCLc0yZ19X64qm/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm px-4 py-2 rounded-lg glass glass-hover text-text-secondary hover:text-text-primary transition-all animated-underline"
