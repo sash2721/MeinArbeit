@@ -53,9 +53,9 @@ export default function About() {
             <div className="grid grid-cols-2 gap-4 pt-4">
               {[
                 { label: "Location", value: "India (Remote)", icon: "📍" },
-                { label: "Currently", value: "Building Relay 🚀", icon: "⚡" },
+                { label: "Currently", value: "Learning K8s & gRPC🚀", icon: "⚡" },
                 { label: "Interests", value: "Systems · Cloud · GenAI", icon: "🎯" },
-                { label: "Next Up", value: "Exploring Web3", icon: "🔮" },
+                { label: "Next Up", value: "Exploring Web3 & WebRTC", icon: "🔮" },
               ].map((item, i) => (
                 <ScaleIn key={item.label} delay={0.5 + i * 0.08}>
                   <div className="glass glass-hover rounded-xl p-4 group cursor-default">
