@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 const codeSnippet = `func main() {
   srv := server.New(
@@ -11,15 +12,89 @@ const codeSnippet = `func main() {
   srv.Run()
 }`;
 
+/* Floating particles for the hero background */
+function Particles() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {Array.from({ length: 20 }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full"
+          style={{
+            width: Math.random() * 3 + 1,
+            height: Math.random() * 3 + 1,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            background: i % 3 === 0
+              ? "var(--accent-light)"
+              : i % 3 === 1
+              ? "var(--accent-3)"
+              : "var(--accent-1)",
+            opacity: Math.random() * 0.4 + 0.1,
+          }}
+          animate={{
+            y: [0, -30 - Math.random() * 50, 0],
+            x: [0, (Math.random() - 0.5) * 30, 0],
+            opacity: [0.1, 0.4, 0.1],
+          }}
+          transition={{
+            duration: 6 + Math.random() * 8,
+            repeat: Infinity,
+            delay: Math.random() * 5,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* Animated status line in the hero */
+function StatusLine() {
+  const statuses = [
+    "Shipping production‑ready Go services",
+    "Architecting distributed systems on K8s",
+    "Building GenAI pipelines",
+    "Scaling cloud infrastructure",
+  ];
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIdx((i) => (i + 1) % statuses.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [statuses.length]);
+
+  return (
+    <div className="h-6 overflow-hidden">
+      <motion.div
+        key={idx}
+        initial={{ y: 24, opacity: 0, filter: "blur(4px)" }}
+        animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+        exit={{ y: -24, opacity: 0, filter: "blur(4px)" }}
+        transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
+        className="text-sm text-text-muted font-mono flex items-center gap-2"
+      >
+        <span
+          className="inline-block w-1.5 h-1.5 rounded-full"
+          style={{ background: "#22c55e", boxShadow: "0 0 6px rgba(34,197,94,0.5)" }}
+        />
+        {statuses[idx]}
+      </motion.div>
+    </div>
+  );
+}
+
 export default function Hero() {
   return (
     <section
-      className="relative min-h-screen flex items-center overflow-hidden px-6"
+      className="relative min-h-screen flex items-center overflow-hidden px-6 noise-overlay"
       style={{ background: "var(--gradient-hero)" }}
     >
       {/* Grid background */}
       <div
-        className="absolute inset-0 opacity-[0.04]"
+        className="absolute inset-0 opacity-[0.03]"
         style={{
           backgroundImage:
             "linear-gradient(var(--accent-1) 1px, transparent 1px), linear-gradient(90deg, var(--accent-1) 1px, transparent 1px)",
@@ -27,15 +102,24 @@ export default function Hero() {
         }}
       />
 
-      {/* Gradient orbs */}
-      <div className="absolute top-1/3 right-[10%] w-[500px] h-[500px] rounded-full blur-[150px] opacity-20"
-        style={{ background: "var(--accent-1)" }} />
-      <div className="absolute bottom-1/4 left-[5%] w-[400px] h-[400px] rounded-full blur-[150px] opacity-15"
-        style={{ background: "var(--accent-3)" }} />
-      <div className="absolute top-[15%] left-[40%] w-[300px] h-[300px] rounded-full blur-[120px] opacity-10"
-        style={{ background: "var(--accent-2)" }} />
+      {/* Animated gradient orbs */}
+      <div
+        className="absolute top-1/3 right-[10%] w-[500px] h-[500px] rounded-full blur-[150px] aurora-orb"
+        style={{ background: "var(--accent-1)" }}
+      />
+      <div
+        className="absolute bottom-1/4 left-[5%] w-[400px] h-[400px] rounded-full blur-[150px] aurora-orb-delayed"
+        style={{ background: "var(--accent-3)" }}
+      />
+      <div
+        className="absolute top-[15%] left-[40%] w-[300px] h-[300px] rounded-full blur-[120px] aurora-orb-slow"
+        style={{ background: "var(--accent-2)" }}
+      />
 
-      <div className="relative max-w-7xl mx-auto w-full">
+      {/* Particles */}
+      <Particles />
+
+      <div className="relative max-w-7xl mx-auto w-full z-10">
         <div className="grid lg:grid-cols-[1fr_1fr] gap-8 lg:gap-12 items-center min-h-[80vh]">
           {/* Left — main content */}
           <div className="py-20 lg:py-32">
@@ -45,8 +129,13 @@ export default function Hero() {
               transition={{ duration: 0.6 }}
               className="mb-8"
             >
-              <span className="inline-block font-mono text-xs tracking-[0.3em] uppercase px-4 py-2 rounded-full border text-accent-light"
-                style={{ borderColor: "var(--border-accent)", background: "var(--bg-glass)" }}>
+              <span
+                className="section-badge"
+              >
+                <span
+                  className="inline-block w-1.5 h-1.5 rounded-full"
+                  style={{ background: "#22c55e", boxShadow: "0 0 8px rgba(34,197,94,0.6)" }}
+                />
                 Software Engineer
               </span>
             </motion.div>
@@ -66,22 +155,22 @@ export default function Hero() {
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg sm:text-xl text-text-secondary max-w-lg leading-relaxed mb-6"
+              className="text-lg sm:text-xl text-text-secondary max-w-lg leading-relaxed mb-4"
             >
               Building{" "}
-              <span className="text-accent-light">scalable backend systems</span>,{" "}
-              <span className="text-accent-light">distributed architectures</span>, and{" "}
-              <span className="text-accent-light">cloud-native platforms</span>.
+              <span className="text-accent-light font-medium">scalable backend systems</span>,{" "}
+              <span className="text-accent-light font-medium">distributed architectures</span>, and{" "}
+              <span className="text-accent-light font-medium">cloud-native platforms</span>.
             </motion.p>
 
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-sm text-text-muted max-w-md mb-10"
+              className="mb-10"
             >
-              Turning complex infrastructure problems into reliable, production-ready systems.
-            </motion.p>
+              <StatusLine />
+            </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -91,9 +180,9 @@ export default function Hero() {
             >
               <a
                 href="#projects"
-                className="px-7 py-3.5 rounded-xl gradient-accent text-white text-sm font-medium transition-all hover:opacity-90 hover:scale-[1.02]"
+                className="cta-button px-7 py-3.5 rounded-xl gradient-accent text-white text-sm font-medium relative z-10"
               >
-                View Projects
+                <span className="relative z-10">View Projects</span>
               </a>
               <a
                 href="#contact"
@@ -131,27 +220,33 @@ export default function Hero() {
             className="hidden lg:flex flex-col gap-5"
           >
             {/* Code snippet card */}
-            <div className="card rounded-2xl p-5 rotate-1">
+            <div className="card rounded-2xl p-5 rotate-1 float-slow pulse-glow">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-2.5 h-2.5 rounded-full" style={{ background: "#ef4444" }} />
                 <div className="w-2.5 h-2.5 rounded-full" style={{ background: "#eab308" }} />
                 <div className="w-2.5 h-2.5 rounded-full" style={{ background: "#22c55e" }} />
                 <span className="text-[10px] font-mono text-text-muted ml-2">main.go</span>
+                <span className="ml-auto text-[9px] font-mono text-text-muted px-2 py-0.5 rounded-md" style={{ background: "var(--bg-glass)", border: "1px solid var(--border-primary)" }}>
+                  Go
+                </span>
               </div>
               <pre className="text-[11px] font-mono leading-relaxed text-text-secondary overflow-hidden">
                 <code>{codeSnippet}</code>
               </pre>
+              <div className="flex items-center gap-2 mt-3 pt-3" style={{ borderTop: "1px solid var(--border-primary)" }}>
+                <span className="text-[9px] font-mono text-text-muted typing-cursor">ready</span>
+              </div>
             </div>
 
             {/* Info cards row */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="card rounded-2xl p-5 -rotate-1">
+              <div className="card rounded-2xl p-5 -rotate-1 float-delayed">
                 <p className="font-mono text-xs text-text-muted mb-2">Current Role</p>
                 <p className="text-sm font-medium text-text-primary">Software Engineer</p>
                 <p className="text-xs text-accent-light font-mono mt-1">@ Cloudanix</p>
               </div>
 
-              <div className="card rounded-2xl p-5 rotate-1">
+              <div className="card rounded-2xl p-5 rotate-1 float">
                 <p className="font-mono text-xs text-text-muted mb-2">Focus Areas</p>
                 <div className="flex flex-wrap gap-1.5">
                   {["Backend", "DevOps", "GenAI", "Systems"].map((t) => (
@@ -166,14 +261,14 @@ export default function Hero() {
 
             {/* Tech + stats row */}
             <div className="grid grid-cols-[1.2fr_0.8fr] gap-4">
-              <div className="card rounded-2xl p-5 -rotate-[0.5deg]">
+              <div className="card rounded-2xl p-5 -rotate-[0.5deg] float-delayed">
                 <p className="font-mono text-xs text-text-muted mb-2">Tech Stack</p>
                 <p className="text-sm text-text-secondary">Go · Python · TypeScript</p>
                 <p className="text-xs text-text-muted mt-1.5">AWS · GCP · K8s · Docker</p>
                 <p className="text-xs text-text-muted mt-0.5">PostgreSQL · Redis · Kafka</p>
               </div>
 
-              <div className="card rounded-2xl p-5 rotate-[0.5deg] flex flex-col justify-between">
+              <div className="card rounded-2xl p-5 rotate-[0.5deg] flex flex-col justify-between float-slow">
                 <div>
                   <p className="font-mono text-xs text-text-muted mb-2">Education</p>
                   <p className="text-sm text-text-primary font-medium">B.Tech AI & ML</p>
@@ -191,7 +286,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}

@@ -44,18 +44,18 @@ const categories = [
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-20 lg:py-32 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section id="skills" className="relative py-20 lg:py-32 px-6 noise-overlay">
+      <div className="relative max-w-7xl mx-auto z-10">
         <div className="flex flex-col lg:flex-row lg:gap-20">
           {/* Left — sticky heading */}
           <div className="lg:w-1/3 lg:sticky lg:top-32 lg:self-start mb-12 lg:mb-0">
             <FadeUp>
-              <span className="font-mono text-xs tracking-[0.3em] uppercase text-accent-light">
+              <span className="section-badge">
                 02 / Skills
               </span>
             </FadeUp>
             <FadeUp delay={0.1}>
-              <h2 className="text-4xl sm:text-5xl font-bold mt-4 mb-6 gradient-text">
+              <h2 className="text-4xl sm:text-5xl font-bold mt-6 mb-6 gradient-text">
                 Tech Stack
               </h2>
             </FadeUp>
@@ -64,6 +64,20 @@ export default function Skills() {
                 Tools and technologies I use to build scalable, production-grade systems.
               </p>
             </FadeUp>
+
+            {/* Fun metric */}
+            <FadeUp delay={0.3}>
+              <div className="mt-8 flex gap-6">
+                <div>
+                  <p className="text-3xl font-bold gradient-text">30+</p>
+                  <p className="text-xs text-text-muted mt-1">Technologies</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold gradient-text">6</p>
+                  <p className="text-xs text-text-muted mt-1">Categories</p>
+                </div>
+              </div>
+            </FadeUp>
           </div>
 
           {/* Right — cards grid */}
@@ -71,18 +85,29 @@ export default function Skills() {
             <StaggerContainer className="grid sm:grid-cols-2 gap-4">
               {categories.map((cat) => (
                 <StaggerItem key={cat.title}>
-                  <div className="card rounded-2xl p-6 h-full">
+                  <div className="card rounded-2xl p-6 h-full group">
                     <div className="flex items-center gap-3 mb-5">
-                      <span className="text-lg" style={{ color: cat.accent }}>{cat.icon}</span>
+                      <span
+                        className="text-lg w-8 h-8 flex items-center justify-center rounded-lg transition-transform group-hover:scale-110"
+                        style={{
+                          color: cat.accent,
+                          background: `color-mix(in srgb, ${cat.accent} 10%, transparent)`,
+                        }}
+                      >
+                        {cat.icon}
+                      </span>
                       <h3 className="text-sm font-mono font-medium text-text-primary">
                         {cat.title}
                       </h3>
+                      <span className="ml-auto text-[10px] font-mono text-text-muted px-2 py-0.5 rounded-full" style={{ background: "var(--bg-glass)" }}>
+                        {cat.items.length}
+                      </span>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {cat.items.map((item) => (
                         <span
                           key={item}
-                          className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg text-text-secondary transition-colors"
+                          className="skill-pill inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg text-text-secondary cursor-default"
                           style={{
                             background: "var(--bg-glass)",
                             border: "1px solid var(--border-primary)",

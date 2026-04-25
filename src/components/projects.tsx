@@ -18,6 +18,7 @@ const projects = [
     ],
     github: "https://github.com/sash2721/Visora",
     live: "https://visora.me/",
+    color: "var(--accent-1)",
   },
   {
     title: "Relay",
@@ -32,8 +33,8 @@ const projects = [
       "Low-latency provisioning",
     ],
     github: "https://github.com/sash2721/Relay",
-    live: null,
-    wip: true,
+    live: "http://63.178.240.45:3000",
+    color: "var(--accent-3)",
   },
   {
     title: "CodeStars",
@@ -49,6 +50,7 @@ const projects = [
     ],
     github: "https://github.com/sash2721/CodeStars_Evaluator_Service",
     live: null,
+    color: "var(--accent-light)",
   },
   {
     title: "NovaNest",
@@ -63,23 +65,37 @@ const projects = [
     ],
     github: "https://github.com/sash2721/NovaNest",
     live: "https://novanest-prod.onrender.com/",
+    color: "var(--accent-2)",
   },
 ];
 
 export default function Projects() {
   return (
-    <section id="projects" className="py-20 lg:py-32 px-6" style={{ background: "var(--bg-secondary)" }}>
-      <div className="max-w-7xl mx-auto">
+    <section id="projects" className="relative py-20 lg:py-32 px-6 noise-overlay" style={{ background: "var(--bg-secondary)" }}>
+      {/* Subtle background orb */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[200px] opacity-[0.05] pointer-events-none"
+        style={{ background: "var(--accent-1)" }}
+      />
+
+      <div className="relative max-w-7xl mx-auto z-10">
         <FadeUp>
-          <span className="font-mono text-xs tracking-[0.3em] uppercase text-accent-light">
+          <span className="section-badge">
             03 / Projects
           </span>
         </FadeUp>
 
         <FadeUp delay={0.1}>
-          <h2 className="text-4xl sm:text-5xl font-bold mt-4 mb-16 gradient-text max-w-lg">
+          <h2 className="text-4xl sm:text-5xl font-bold mt-6 mb-6 gradient-text max-w-lg">
             Things I&apos;ve Built
           </h2>
+        </FadeUp>
+
+        <FadeUp delay={0.15}>
+          <p className="text-text-secondary mb-16 max-w-xl">
+            A selection of projects that showcase my passion for backend engineering,
+            distributed systems, and building tools that solve real problems.
+          </p>
         </FadeUp>
 
         <div className="space-y-12">
@@ -102,29 +118,38 @@ export default function Projects() {
                   }`}
                   style={{ maxWidth: "56rem" }}
                 >
-                  {/* Accent top bar */}
-                  <div className="h-1 w-full" style={{
-                    background: i % 2 === 0
-                      ? "linear-gradient(90deg, var(--accent-1), var(--accent-3))"
-                      : "linear-gradient(90deg, var(--accent-3), var(--accent-1))",
-                  }} />
+                  {/* Accent top bar with shimmer */}
+                  <div
+                    className="project-accent-bar h-1 w-full"
+                    style={{
+                      background:
+                        i % 2 === 0
+                          ? "linear-gradient(90deg, var(--accent-1), var(--accent-3))"
+                          : "linear-gradient(90deg, var(--accent-3), var(--accent-1))",
+                    }}
+                  />
 
                   <div className="p-6 sm:p-8 lg:p-10">
                     {/* Header */}
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
                       <div>
                         <div className="flex items-center gap-3">
+                          {/* Project number */}
+                          <span
+                            className="text-xs font-mono font-bold w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
+                            style={{
+                              background: `color-mix(in srgb, ${project.color} 15%, transparent)`,
+                              color: project.color,
+                              border: `1px solid color-mix(in srgb, ${project.color} 25%, transparent)`,
+                            }}
+                          >
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
                           <h3 className="text-2xl font-bold text-text-heading">
                             {project.title}
                           </h3>
-                          {project.wip && (
-                            <span className="text-[10px] font-mono px-2.5 py-1 rounded-full border"
-                              style={{ borderColor: "rgba(245, 158, 11, 0.3)", color: "#f59e0b", background: "rgba(245, 158, 11, 0.08)" }}>
-                              IN PROGRESS
-                            </span>
-                          )}
                         </div>
-                        <p className="text-sm text-accent-light font-mono mt-1">
+                        <p className="text-sm text-accent-light font-mono mt-2 ml-10">
                           {project.subtitle}
                         </p>
                       </div>
@@ -145,8 +170,13 @@ export default function Projects() {
                           <MagneticHover>
                             <a href={project.live} target="_blank" rel="noopener noreferrer"
                               aria-label={`${project.title} Live`}
-                              className="w-9 h-9 rounded-lg glass glass-hover flex items-center justify-center text-text-muted hover:text-accent-light transition-all">
-                              <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
+                              className="group/live flex items-center gap-2 h-9 px-3 rounded-lg glass glass-hover text-text-muted hover:text-accent-light transition-all">
+                              <span
+                                className="inline-block w-1.5 h-1.5 rounded-full"
+                                style={{ background: "#22c55e", boxShadow: "0 0 6px rgba(34,197,94,0.5)" }}
+                              />
+                              <span className="text-[11px] font-mono">Live</span>
+                              <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />
                               </svg>
                             </a>
@@ -160,11 +190,16 @@ export default function Projects() {
                     </p>
 
                     {/* Highlights */}
-                    <div className="grid sm:grid-cols-2 gap-2 mb-6">
+                    <div className="grid sm:grid-cols-2 gap-2.5 mb-6">
                       {project.highlights.map((h) => (
-                        <div key={h} className="flex items-start gap-2 text-xs text-text-muted">
-                          <span className="text-accent-light mt-0.5 shrink-0">▹</span>
-                          {h}
+                        <div key={h} className="flex items-start gap-2.5 text-xs text-text-muted group/highlight">
+                          <span
+                            className="mt-1 shrink-0 w-1 h-1 rounded-full group-hover/highlight:scale-150 transition-transform"
+                            style={{ background: project.color }}
+                          />
+                          <span className="group-hover/highlight:text-text-secondary transition-colors">
+                            {h}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -173,7 +208,7 @@ export default function Projects() {
                     <div className="flex flex-wrap gap-2">
                       {project.tech.map((t) => (
                         <span key={t}
-                          className="text-[11px] font-mono px-2.5 py-1 rounded-lg text-accent-lighter"
+                          className="skill-pill text-[11px] font-mono px-2.5 py-1 rounded-lg text-accent-lighter cursor-default"
                           style={{ background: "var(--bg-glass)", border: "1px solid var(--border-accent)" }}>
                           {t}
                         </span>
